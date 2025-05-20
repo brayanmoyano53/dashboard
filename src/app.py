@@ -32,6 +32,15 @@ vista_mapa = procesar_datos.merge_muertes_departamentos(muertes, departamentos)
 muertes_mensuales = procesar_datos.agrupar_muertes_por_mes(df_2019)
 # Procesar datos para gráfico de barras: Visualización de las 5 ciudades más violentas de Colombia, considerando homicidios (códigos X95)
 ciudades_mas_violentas = procesar_datos.ciudades_mas_violentas(df_2019, df_division)
+# Procesar datos para gráfico circular: Muestra las 10 ciudades con menor índice de mortalidad.
+ciudades_menos_mortalidad = procesar_datos.ciudades_menos_mortalidad(df_2019, df_division)
+# Procesar datos para tabla: Listado de las 10 principales causas de muerte en Colombia, incluyendo su código, nombre y total de casos
+top_causas_muerte = procesar_datos.causas_principales_muerte(df_2019, df_codigos)
+# Procesar datos para histograma: Distribución de muertes según rangos de edad quinquenales 
+#distribucion_de_muertes = procesar_datos.conteo_muertes_por_rango_edad(df_2019)
+# Procesar datos para gráfico de barras apiladas: Comparación del total de muertes por sexo en cada departamento, para analizar diferencias significativas entre géneros.
+#total_muertes_sexo_departamento = procesar_datos.conteo_muertes_por_departamento_y_sexo(df_2019,df_division)
+
 
 # Generar grafico para mapa: Visualización de la distribución total de muertes por departamento en Colombia para el año 2019.
 fig_mapa_colombia = generar_graficos.crear_mapa(
@@ -44,6 +53,15 @@ fig_mapa_colombia = generar_graficos.crear_mapa(
 fig_grafico_lineas = generar_graficos.grafico_linea_muertes_mensuales(muertes_mensuales)
 # Generar gráfico de barras: Visualización de las 5 ciudades más violentas de Colombia, considerando homicidios (códigos X95)
 fig_grafico_barras = generar_graficos.grafico_barras_ciudades_mas_violentas(ciudades_mas_violentas)
+# Generar gráfico circular: Muestra las 10 ciudades con menor índice de mortalidad.
+fig_grafico_circular = generar_graficos.grafico_circular_ciudades_menos_mortalidad(ciudades_menos_mortalidad)
+# Generar tabla: Listado de las 10 principales causas de muerte en Colombia, incluyendo su código, nombre y total de casos
+fig_tabla_causas = generar_graficos.grafico_tabla_causas_muerte(top_causas_muerte)
+# Generar gráfico histograma: Distribución de muertes según rangos de edad quinquenales 
+#fig_histograma_edad = generar_graficos.grafico_histograma_edad(distribucion_de_muertes)
+# Generar gráfico de barras apiladas: Comparación del total de muertes por sexo en cada departamento, para analizar diferencias significativas entre géneros.
+#fig_barras_apiladas = generar_graficos.grafico_barras_apiladas_sexo_departamento(total_muertes_sexo_departamento)
+
 
 # Definiendo el estilo html y las paginas para cada una de las figuras
 app.layout = html.Div([
@@ -94,7 +112,29 @@ layout_barras = html.Div([
     html.H2("Top 5 Ciudades Más Violentas en Colombia por Homicidios (2019)", style={'textAlign': 'center'}),
     dcc.Graph(id='grafico-barras', figure=fig_grafico_barras, style={'width': '100%', 'height': '750px'})
 ])
+# Página 4 - Gráfico circular
+layout_circular = html.Div([
+    html.H2("Top 10 Ciudades con Menor Índice de Mortalidad", style={'textAlign': 'center'}),
+   dcc.Graph(id='grafico-circular', figure=fig_grafico_circular, style={'width': '100%', 'height': '750px'})
+])
 
+# Página 5 - Tabla de causas
+layout_tabla = html.Div([
+    html.H2("Top 10 Principales Causas de Muerte en Colombia", style={'textAlign': 'center'}),
+    dcc.Graph(id='grafico-tabla', figure=fig_tabla_causas, style={'width': '100%', 'height': '750px'})
+])
+
+# Página 6 - Histograma por edad
+#layout_histograma = html.Div([
+#    html.H2("Distribución de Muertes Según Rangos de Edad", style={'textAlign': 'center'}),
+#    dcc.Graph(id='grafico-histograma', figure=fig_histograma_edad, style={'width': '100%', 'height': '750px'}) 
+#])
+
+# Página 7 - Barras apiladas por sexo y departamento
+#layout_barras_apiladas = html.Div([
+#    html.H2("Comparación del Total de Muertes por Sexo en Cada Departamento", style={'textAlign': 'center'}),
+#    dcc.Graph(id='grafico-apiladas', figure=fig_barras_apiladas, style={'width': '100%', 'height': '750px'})
+#])
 
 
 # Callback de enrutamiento
@@ -107,6 +147,14 @@ def mostrar_contenido(pathname):
         return layout_lineas
     elif pathname == "/barras":
         return layout_barras
+    elif pathname == "/circular":
+        return layout_circular
+    elif pathname == "/tabla":
+        return layout_tabla
+  #  elif pathname == "/histograma":
+  #      return layout_histograma
+  #  elif pathname == "/apiladas":
+  #s      return layout_barras_apiladas
     else:
         return layout_mapa  # Pagina inicial mapa
 
