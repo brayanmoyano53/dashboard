@@ -37,9 +37,9 @@ ciudades_menos_mortalidad = procesar_datos.ciudades_menos_mortalidad(df_2019, df
 # Procesar datos para tabla: Listado de las 10 principales causas de muerte en Colombia, incluyendo su código, nombre y total de casos
 top_causas_muerte = procesar_datos.causas_principales_muerte(df_2019, df_codigos)
 # Procesar datos para histograma: Distribución de muertes según rangos de edad quinquenales 
-#distribucion_de_muertes = procesar_datos.conteo_muertes_por_rango_edad(df_2019)
+distribucion_de_muertes = procesar_datos.conteo_muertes_por_rango_edad(df_2019)
 # Procesar datos para gráfico de barras apiladas: Comparación del total de muertes por sexo en cada departamento, para analizar diferencias significativas entre géneros.
-#total_muertes_sexo_departamento = procesar_datos.conteo_muertes_por_departamento_y_sexo(df_2019,df_division)
+total_muertes_sexo_departamento = procesar_datos.conteo_muertes_por_departamento_y_sexo(df_2019,df_division)
 
 
 # Generar grafico para mapa: Visualización de la distribución total de muertes por departamento en Colombia para el año 2019.
@@ -58,9 +58,9 @@ fig_grafico_circular = generar_graficos.grafico_circular_ciudades_menos_mortalid
 # Generar tabla: Listado de las 10 principales causas de muerte en Colombia, incluyendo su código, nombre y total de casos
 fig_tabla_causas = generar_graficos.grafico_tabla_causas_muerte(top_causas_muerte)
 # Generar gráfico histograma: Distribución de muertes según rangos de edad quinquenales 
-#fig_histograma_edad = generar_graficos.grafico_histograma_edad(distribucion_de_muertes)
+fig_histograma_edad = generar_graficos.grafico_histograma_edad(distribucion_de_muertes)
 # Generar gráfico de barras apiladas: Comparación del total de muertes por sexo en cada departamento, para analizar diferencias significativas entre géneros.
-#fig_barras_apiladas = generar_graficos.grafico_barras_apiladas_sexo_departamento(total_muertes_sexo_departamento)
+fig_barras_apiladas = generar_graficos.grafico_barras_apiladas_sexo_departamento(total_muertes_sexo_departamento)
 
 
 # Definiendo el estilo html y las paginas para cada una de las figuras
@@ -125,16 +125,16 @@ layout_tabla = html.Div([
 ])
 
 # Página 6 - Histograma por edad
-#layout_histograma = html.Div([
-#    html.H2("Distribución de Muertes Según Rangos de Edad", style={'textAlign': 'center'}),
-#    dcc.Graph(id='grafico-histograma', figure=fig_histograma_edad, style={'width': '100%', 'height': '750px'}) 
-#])
+layout_histograma = html.Div([
+    html.H2("Distribución de Muertes Según Rangos de Edad", style={'textAlign': 'center'}),
+    dcc.Graph(id='grafico-histograma', figure=fig_histograma_edad, style={'width': '100%', 'height': '750px'}) 
+])
 
 # Página 7 - Barras apiladas por sexo y departamento
-#layout_barras_apiladas = html.Div([
-#    html.H2("Comparación del Total de Muertes por Sexo en Cada Departamento", style={'textAlign': 'center'}),
-#    dcc.Graph(id='grafico-apiladas', figure=fig_barras_apiladas, style={'width': '100%', 'height': '750px'})
-#])
+layout_barras_apiladas = html.Div([
+    html.H2("Comparación del Total de Muertes por Sexo en Cada Departamento", style={'textAlign': 'center'}),
+    dcc.Graph(id='grafico-apiladas', figure=fig_barras_apiladas, style={'width': '100%', 'height': '750px'})
+])
 
 
 # Callback de enrutamiento
@@ -151,10 +151,10 @@ def mostrar_contenido(pathname):
         return layout_circular
     elif pathname == "/tabla":
         return layout_tabla
-  #  elif pathname == "/histograma":
-  #      return layout_histograma
-  #  elif pathname == "/apiladas":
-  #s      return layout_barras_apiladas
+    elif pathname == "/histograma":
+        return layout_histograma
+    elif pathname == "/apiladas":
+        return layout_barras_apiladas
     else:
         return layout_mapa  # Pagina inicial mapa
 
