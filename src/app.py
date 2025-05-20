@@ -28,8 +28,10 @@ df_2019 = procesar_datos.filtrar_año(df_mortalidad, 2019)
 muertes = procesar_datos.agrupar_muertes_por_departamento(df_2019)
 departamentos = procesar_datos.obtener_departamentos_mas_frecuentes(df_division)
 vista_mapa = procesar_datos.merge_muertes_departamentos(muertes, departamentos)
-
-
+# Procesar datos para gráfico de líneas: Representación del total de muertes por mes en Colombia, mostrando variaciones a lo largo del año.
+muertes_mensuales = procesar_datos.agrupar_muertes_por_mes(df_2019)
+# Procesar datos para gráfico de barras: Visualización de las 5 ciudades más violentas de Colombia, considerando homicidios (códigos X95)
+ciudades_mas_violentas = procesar_datos.ciudades_mas_violentas(df_2019, df_division)
 
 # Generar grafico para mapa: Visualización de la distribución total de muertes por departamento en Colombia para el año 2019.
 fig_mapa_colombia = generar_graficos.crear_mapa(
@@ -38,7 +40,10 @@ fig_mapa_colombia = generar_graficos.crear_mapa(
     valores=vista_mapa['TotalMuertes'],
     textos=vista_mapa['DEPARTAMENTO']
 )
-
+# Generar gráfico de líneas: Representación del total de muertes por mes en Colombia, mostrando variaciones a lo largo del año.
+fig_grafico_lineas = generar_graficos.grafico_linea_muertes_mensuales(muertes_mensuales)
+# Generar gráfico de barras: Visualización de las 5 ciudades más violentas de Colombia, considerando homicidios (códigos X95)
+fig_grafico_barras = generar_graficos.grafico_barras_ciudades_mas_violentas(ciudades_mas_violentas)
 
 # Definiendo el estilo html y las paginas para cada una de las figuras
 app.layout = html.Div([
@@ -79,6 +84,18 @@ layout_mapa = html.Div([
     dcc.Graph(id='mapa-mortalidad', figure=fig_mapa_colombia, style={'width': '100%', 'height': '750px'})
 ])
 
+# Página 2 - Gráfico de líneas
+layout_lineas = html.Div([
+    html.H2("Variación Mensual del Total de Muertes en Colombia (2019)", style={'textAlign': 'center'}),
+    dcc.Graph(id='grafico-lineas', figure=fig_grafico_lineas, style={'width': '100%', 'height': '750px'})
+])
+# Página 3 - Gráfico de barras
+layout_barras = html.Div([
+    html.H2("Top 5 Ciudades Más Violentas en Colombia por Homicidios (2019)", style={'textAlign': 'center'}),
+    dcc.Graph(id='grafico-barras', figure=fig_grafico_barras, style={'width': '100%', 'height': '750px'})
+])
+
+
 
 # Callback de enrutamiento
 @app.callback(Output('page-content', 'children'),
@@ -86,6 +103,10 @@ layout_mapa = html.Div([
 def mostrar_contenido(pathname):
     if pathname == "/mapa":
         return layout_mapa
+    elif pathname == "/lineas":
+        return layout_lineas
+    elif pathname == "/barras":
+        return layout_barras
     else:
         return layout_mapa  # Pagina inicial mapa
 
