@@ -10,8 +10,8 @@ def normalizar_codigo_columna(df, columna):
 #Renombra columnas para los códigos y descripciones estandarizados.
 def renombrar_columnas_codigos(df_codigos):
     return df_codigos.rename(columns={
-        'Código de la CIE-10 cuatro caracteres': 'COD_MUERTE',
-        'Descripcion  de códigos mortalidad a cuatro caracteres': 'DESCRIPCION'
+        'Codigo de la CIE-10 cuatro caracteres': 'COD_MUERTE',
+        'Descripcion  de codigos mortalidad a cuatro caracteres': 'DESCRIPCION'
     })
 
 #Filtra filas donde la longitud del código en la columna sea mayor o igual a min_len.
